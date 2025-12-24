@@ -40,7 +40,47 @@ document.addEventListener("DOMContentLoaded", () => {
           ul.className = "participants";
           details.participants.forEach((participant) => {
             const li = document.createElement("li");
-            li.textContent = participant;
+            li.className = "participant-item";
+
+            const span = document.createElement("span");
+            span.className = "participant-email";
+            span.textContent = participant;
+
+            const btn = document.createElement("button");
+            btn.className = "delete-participant";
+            btn.title = "Unregister participant";
+            btn.setAttribute("aria-label", "Unregister participant");
+            btn.textContent = "✖";
+
+            btn.addEventListener("click", async () => {
+              try {
+                const resp = await fetch(
+                  `/activities/${encodeURIComponent(name)}/unregister?email=${encodeURIComponent(participant)}`,
+                  { method: "DELETE" }
+                );
+                const resJson = await resp.json();
+                if (resp.ok) {
+                  messageDiv.textContent = resJson.message;
+                  messageDiv.className = "success";
+                  messageDiv.classList.remove("hidden");
+                  // refresh activities list
+                  await fetchActivities();
+                } else {
+                  messageDiv.textContent = resJson.detail || "Failed to unregister";
+                  messageDiv.className = "error";
+                  messageDiv.classList.remove("hidden");
+                }
+                setTimeout(() => messageDiv.classList.add("hidden"), 5000);
+              } catch (err) {
+                messageDiv.textContent = "Failed to unregister. Please try again.";
+                messageDiv.className = "error";
+                messageDiv.classList.remove("hidden");
+                console.error("Error unregistering:", err);
+              }
+            });
+
+            li.appendChild(span);
+            li.appendChild(btn);
             ul.appendChild(li);
           });
           participantsContainer.appendChild(ul);

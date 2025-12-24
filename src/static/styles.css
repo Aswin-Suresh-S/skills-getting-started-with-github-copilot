@@ -80,12 +80,16 @@ section h3 {
 }
 
 .participants {
-  list-style: disc;
-  margin: 8px 0 0 20px;
+  list-style: none;
+  margin: 8px 0 0 0;
   padding: 0;
 }
 
 .participants li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
   padding: 8px;
   background-color: #ffffff;
@@ -94,6 +98,24 @@ section h3 {
   box-shadow: 0 1px 0 rgba(0,0,0,0.02);
   color: #333;
   font-size: 0.95rem;
+}
+
+.participant-email {
+  word-break: break-all;
+}
+
+.delete-participant {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.delete-participant:hover {
+  background-color: rgba(198,40,40,0.08);
 }
 
 /* Empty state for participants */
